@@ -23,15 +23,13 @@
 											$btn.button().click(
 													function() {
 															if(!jQuery('.bootbox').hasClass('in')) {
-																bootbox.alert('<div id="wmHtmlOverlayEditorTextareaWrapper" style="width:100%;height:400px;"><textarea id="wmHtmlOverlayEditorTextarea" style="height:300px;">'+$this.val()+'</textarea><input type="hidden" name="wmHtmlOverlayEditorTarget" id="wmHtmlOverlayEditorTarget" value="'+$this.attr('name')+'" /></div>', 
+																bootbox.alert('<div id="wmHtmlOverlayEditorTextareaWrapper" style="width:100%;height:400px;"><textarea id="wmHtmlOverlayEditorTextarea" style="height:360px;">'+$this.val()+'</textarea><input type="hidden" name="wmHtmlOverlayEditorTarget" id="wmHtmlOverlayEditorTarget" value="'+$this.attr('name')+'" /></div>', 
 																	function() {
-																		$content = tinymce.activeEditor.getContent();//jQuery('#wmHtmlOverlayEditorTextarea').val();
+																		$content = tinymce.activeEditor.getContent();
 																		$target = jQuery('#wmHtmlOverlayEditorTarget').val();
-																		
 																		
 																		console.log($content);
 																		console.log(jQuery('#wmHtmlOverlayEditorTextarea').val());
-																		
 																		
 																		if($content!='') { jQuery('input[name="'+$target+'"]').val($content); }
 																	});
@@ -39,6 +37,8 @@
 																tinymce.init({
 																		selector: "#wmHtmlOverlayEditorTextarea",
 																		relative_urls : true,
+																		menubar:false,
+																		statusbar: false,
 																		document_base_url:  "<?php echo site_url(); ?>/wp-content/plugins/wm-dms-htmleditor/js/tinymce/",
 																		plugins: [
 																			"advlist autolink lists link image charmap print preview anchor",

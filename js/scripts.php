@@ -1,12 +1,10 @@
 <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
 <script>
 		jQuery(document).ready(function() {
-			console.log('DMS Options');
-			var workflag = false;
-			
+			var editorWorkFlag = false;
 			jQuery('div.panel-section-options[data-key="section-options"] .tab-panel-inner').on('DOMSubtreeModified', function(event) {
-					if(workflag) { return; }
-					workflag = true;
+					if(editorWorkFlag) { return; }
+					editorWorkFlag = true;
 					
 					$targ = jQuery(event.target);
 					if($targ.attr('class') == 'panel-tab-content')
@@ -17,8 +15,7 @@
 							$inputs.each(
 									function() {
 											$this = jQuery(this);
-											$this.css({width:'82%'});
-											$this.wrap('<div />').parent().append('<a class="btn" href="#" style="margin:0 0 10px 10px;"><i class="icon-star wmHtmlOverlayEditorButton"></i></a>');
+											$this.css({width:'82%'}).wrap('<div />').parent().append('<a class="btn" href="#" style="margin:0 0 10px 10px;"><i class="icon-star wmHtmlOverlayEditorButton"></i></a>');
 											$btn = $this.next();
 											if($btn.length!=0) {
 												$btn.button().click(
@@ -58,15 +55,13 @@
 																}
 															}
 													);
-												}//endif
+												}
 										}
 								);
 						}
 					}
-					
-					workflag = false;
+					editorWorkFlag = false;
 				});
-				
 		});
 </script>
 <style>

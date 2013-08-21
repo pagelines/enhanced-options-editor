@@ -1,6 +1,6 @@
 <?php
 /*
-	Plugin Name: DMS Options HTML Editor
+	Plugin Name: Enhanced Options Editor
 	Plugin URI: http://slipperysource.com/downloads/enhanced-options-editor-for-pagelines-dms/
 	Description: Turns any text input field or textrea within the DMS section options into an HTML editor
 	Version: 1.0

@@ -6,6 +6,7 @@
 	Version: 1.0
 	Author: William Mincy
 	Author URI: http://slipperysource.com/
+	V3: true
 */
 
 function wmHtmlEditorEnable() {

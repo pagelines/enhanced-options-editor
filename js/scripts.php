@@ -28,7 +28,7 @@
 																			$content = tinymce.activeEditor.getContent();
 																			$target = jQuery('#wmHtmlOverlayEditorTarget').val();
 																			$control = jQuery('input[name="'+$target+'"],textarea[name="'+$target+'"]');
-																			if($content!='') { $control.val($content); }
+																			if($content!='') { $control.val($content); setTimeout(function() { $control.focus().blur(); }, 200); }
 																			tinymce.remove();
 																		});
 																	tinymce.init({
@@ -38,13 +38,18 @@
 																			statusbar: false,
 																			document_base_url:  "<?php echo site_url(); ?>/wp-content/plugins/wm-dms-htmleditor/js/tinymce/",
 																			plugins: [
-																				"advlist autolink lists link image charmap print preview anchor",
+																				"advlist autolink lists link image charmap print preview anchor tabfocus",
 																				"searchreplace visualblocks code fullscreen",
-																				"insertdatetime media table contextmenu paste"
+																				"insertdatetime media table contextmenu paste "
 																			],
-																			toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent "
+																			importcss_selector_converter: function(selector) {
+																				if(selector.split(' ').length==1) {
+																					console.log(selector);
+																				}
+																			},
+																			toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+																			tabfocus_elements: ":prev,:next"
 																		});
-																	
 																	tinymce.activeEditor.setContent($this.val());
 																} else {
 																	$content = tinymce.activeEditor.getContent();

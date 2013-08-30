@@ -30,6 +30,7 @@
 																			$control = jQuery('input[name="'+$target+'"],textarea[name="'+$target+'"]');
 																			if($content!='') { $control.val($content); setTimeout(function() { $control.focus().blur(); }, 200); }
 																			tinymce.remove();
+																			jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();
 																		});
 																	tinymce.init({
 																			selector: "#wmHtmlOverlayEditorTextarea",
@@ -42,15 +43,68 @@
 																				"searchreplace visualblocks code fullscreen",
 																				"insertdatetime media table contextmenu paste "
 																			],
-																			importcss_selector_converter: function(selector) {
-																				if(selector.split(' ').length==1) {
-																					console.log(selector);
-																				}
-																			},
 																			toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
 																			tabfocus_elements: ":prev,:next"
 																		});
 																	tinymce.activeEditor.setContent($this.val());
+																	var $bootboxFooter = jQuery('div.bootbox div.modal-footer');
+																	$bootboxFooter.find('a').html('Save With Formatting');
+																	$bootboxFooter.prepend('<a href="#" id="saveWithoutFormatting" class="btn btn-default">Save Without Formatting</a>');
+																	var $savebutton = jQuery('#saveWithoutFormatting',$bootboxFooter);
+																	$savebutton.off('click').on('click', function(event) {
+																		event.preventDefault(); event.stopPropagation();
+																		
+																		$content = tinymce.activeEditor.getContent();
+																		$target = jQuery('#wmHtmlOverlayEditorTarget').val();
+																		$control = jQuery('input[name="'+$target+'"],textarea[name="'+$target+'"]');
+																		if($content!='') {
+																			var strip_tags = function(str, allowed_tags)
+																			{
+
+																				var key = '', 
+																					allowed = false,
+																					matches = [], 
+																					allowed_array = [],
+																					allowed_tag = '';
+																					i = 0, k = '', html = ''; 
+																				var replacer = function (search, replace, str) {
+																					return str.split(search).join(replace);
+																				};
+																				if (allowed_tags) {
+																					allowed_array = allowed_tags.match(/([a-zA-Z0-9]+)/gi);
+																				}
+																				str += '';
+																				matches = str.match(/(<\/?[\S][^>]*>)/gi);
+																				for (key in matches) {
+																					if (isNaN(key)) {
+																						continue;
+																					}
+																					html = matches[key].toString();
+																					allowed = false;
+																					for (k in allowed_array) {
+																						allowed_tag = allowed_array[k];
+																						i = -1;
+
+																						if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+'>');}
+																						if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+' ');}
+																						if (i != 0) { i = html.toLowerCase().indexOf('</'+allowed_tag)   ;}
+
+																						if (i == 0) {
+																							allowed = true;
+																							break;
+																						}
+																					}
+																					if (!allowed) { str = replacer(html, "\n", str); }
+																				}
+																				return str.replace(/^\s+|\s+$/g, '').replace(/\n\s*\n/g, '\n');
+																			}
+																			$control.val(strip_tags($content)); 
+																			setTimeout(function() { $control.focus().blur(); }, 200);
+																		}
+																		tinymce.remove();
+																		jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();
+																		window.bootbox.hideAll();
+																	});
 																} else {
 																	$content = tinymce.activeEditor.getContent();
 																	$target = jQuery('#wmHtmlOverlayEditorTarget').val();

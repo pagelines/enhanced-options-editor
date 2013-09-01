@@ -2,6 +2,11 @@
 <script>
 		jQuery(document).ready(function() {
 			var editorWorkFlag = false;
+			jQuery(document).on('focusin', function(e) {
+				if (jQuery(event.target).closest(".mce-window").length) {
+					e.stopImmediatePropagation();
+				}
+			});
 			jQuery('div.panel-section-options[data-key="section-options"] .tab-panel-inner').on('DOMSubtreeModified', function(event) {
 					if(editorWorkFlag) { return; }
 					editorWorkFlag = true;
@@ -28,7 +33,14 @@
 																			$content = tinymce.activeEditor.getContent();
 																			$target = jQuery('#wmHtmlOverlayEditorTarget').val();
 																			$control = jQuery('input[name="'+$target+'"],textarea[name="'+$target+'"]');
-																			if($content!='') { $control.val($content); setTimeout(function() { $control.focus().blur(); }, 200); }
+																			if($content!='') { 
+																				$control.val('');
+																				setTimeout(function () {
+																					$control.focus().blur();
+																					$control.val($content);
+																					setTimeout(function() { $control.focus().blur(); }, 200); 
+																				}, 200);
+																			}
 																			tinymce.remove();
 																			jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();
 																		});
@@ -37,17 +49,22 @@
 																			relative_urls : true,
 																			menubar:false,
 																			statusbar: false,
+																			extended_valid_elements : "div[*],i[*],span[*],em[*],b[*],video[*],embed[*],audio[*],object[*]",
 																			document_base_url:  "<?php echo site_url(); ?>/wp-content/plugins/wm-dms-htmleditor/js/tinymce/",
 																			plugins: [
 																				"advlist autolink lists link image charmap print preview anchor tabfocus",
-																				"searchreplace visualblocks code fullscreen",
+																				"searchreplace visualblocks code fullscreen nonbreaking",
 																				"insertdatetime media table contextmenu paste "
 																			],
-																			toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+																			media_strict: false,
+																			convert_urls: false,
+																			toolbar: "undo redo | styleselect | bold italic | link image media | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code",
 																			tabfocus_elements: ":prev,:next"
 																		});
 																	tinymce.activeEditor.setContent($this.val());
-																	var $bootboxFooter = jQuery('div.bootbox div.modal-footer');
+																	var $bootbox = jQuery('div.bootbox');
+																	$bootbox.css({'width':'80%', 'left': '25%', 'margin-left': '-15%'});
+																	var $bootboxFooter = jQuery('div.modal-footer', $bootbox);
 																	$bootboxFooter.find('a').html('Save With Formatting');
 																	$bootboxFooter.prepend('<a href="#" id="saveWithoutFormatting" class="btn btn-default">Save Without Formatting</a>');
 																	var $savebutton = jQuery('#saveWithoutFormatting',$bootboxFooter);
@@ -98,8 +115,12 @@
 																				}
 																				return str.replace(/^\s+|\s+$/g, '').replace(/\n\s*\n/g, '\n');
 																			}
-																			$control.val(strip_tags($content)); 
-																			setTimeout(function() { $control.focus().blur(); }, 200);
+																			$control.val('');
+																			setTimeout(function() {
+																				$control.focus().blur();
+																				$control.val(strip_tags($content)); 
+																				setTimeout(function() { $control.focus().blur(); }, 200);
+																			},200);
 																		}
 																		tinymce.remove();
 																		jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();

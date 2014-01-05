@@ -20,7 +20,7 @@
 							$inputs.each(
 									function() {
 											$this = jQuery(this);
-											$this.css({width:'82%'}).wrap('<div />').parent().append('<a class="btn" href="#" style="margin:0 0 10px 10px;"><i class="icon-star wmHtmlOverlayEditorButton"></i></a>');
+											$this.css({width:'80%'}).wrap('<div />').parent().append('<a class="btn" href="#" style="margin:0 0 10px 10px;"><i class="icon-star wmHtmlOverlayEditorButton"></i></a>');
 											$btn = $this.next();
 											if($btn.length!=0) {
 												$btn.button().click(
@@ -28,7 +28,7 @@
 																event.preventDefault();
 																$this = jQuery(this).parent().find('input,textarea');
 																if(!jQuery('.bootbox').hasClass('in')) {
-																	bootbox.alert('<div id="wmHtmlOverlayEditorTextareaWrapper" style="width:100%;height:400px;"><textarea id="wmHtmlOverlayEditorTextarea" style="height:360px;">'+$this.val()+'</textarea><input type="hidden" name="wmHtmlOverlayEditorTarget" id="wmHtmlOverlayEditorTarget" value="'+$this.attr('name')+'" /></div>', 
+																	bootbox.alert('<div id="wmHtmlOverlayEditorTextareaWrapper" style="width:100%;height:435px;"><textarea id="wmHtmlOverlayEditorTextarea" style="height:360px;">'+$this.val()+'</textarea><input type="hidden" name="wmHtmlOverlayEditorTarget" id="wmHtmlOverlayEditorTarget" value="'+$this.attr('name')+'" /></div>', 
 																		function() {
 																			$content = tinymce.activeEditor.getContent();
 																			$target = jQuery('#wmHtmlOverlayEditorTarget').val();
@@ -57,11 +57,11 @@
 																			plugins: [
 																				"advlist autolink lists link image charmap print preview anchor tabfocus",
 																				"searchreplace visualblocks code fullscreen nonbreaking",
-																				"insertdatetime media table contextmenu paste "
+																				"insertdatetime media table contextmenu paste textcolor"
 																			],
 																			media_strict: false,
 																			convert_urls: false,
-																			toolbar: "undo redo | styleselect | bold italic | link image media | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code",
+																			toolbar: "undo redo | fontselect styleselect | bold italic | link image media | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | charmap code",
 																			tabfocus_elements: ":prev,:next"
 																		});
 																	tinymce.activeEditor.setContent($this.val());
@@ -168,5 +168,5 @@
 <style>
 	.eoe-modal { z-index:10500; width: 80%; left: 25%; margin-left: -15%; }
 	.eoe-modal-backdrop { z-index:10400; }
-	.modal-body { padding: 0; }
+	.modal-body { padding: 0; max-height: 500px; }
 </style>

@@ -74,6 +74,16 @@
 																	var $bootboxFooter = jQuery('div.modal-footer', $bootbox);
 																	$bootboxFooter.find('a').html('Save With Formatting');
 																	$bootboxFooter.prepend('<a href="#" id="saveWithoutFormatting" class="btn btn-default">Save Without Formatting</a>');
+																	$bootboxFooter.append('<a href="#" id="cancelWithoutFormatting" class="btn btn-default">Cancel</a>');
+																	var cancelButton = jQuery('#cancelWithoutFormatting',$bootboxFooter);
+																	cancelButton.off('click').on('click', function(event) {
+																		event.preventDefault(); event.stopPropagation();
+																		
+																		tinymce.remove();
+																		jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();
+																		jQuery('div.bootbox div.modal-footer #cancelWithoutFormatting').off('click').remove();
+																		window.bootbox.hideAll();
+																	});
 																	var $savebutton = jQuery('#saveWithoutFormatting',$bootboxFooter);
 																	$savebutton.off('click').on('click', function(event) {
 																		event.preventDefault(); event.stopPropagation();
@@ -132,9 +142,9 @@
 																			},200);
 																		}
 																		
-																		
 																		tinymce.remove();
 																		jQuery('div.bootbox div.modal-footer #saveWithoutFormatting').off('click').remove();
+																		jQuery('div.bootbox div.modal-footer #cancelWithoutFormatting').off('click').remove();
 																		window.bootbox.hideAll();
 																	});
 																} else {
